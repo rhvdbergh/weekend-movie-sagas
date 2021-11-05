@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 function MovieDetails() {
   // set up the redux dispatch
@@ -8,6 +8,9 @@ function MovieDetails() {
 
   // fetch the id of selected movie from the url
   const { id } = useParams();
+
+  // set up the useHistory hook to navigate
+  const history = useHistory();
 
   // fetch the selected movie from the redux store
   const movie = useSelector((store) => store.selectedMovie);
@@ -32,6 +35,7 @@ function MovieDetails() {
         {movie.genres &&
           movie.genres.map((genre, index) => <p key={index}>{genre}</p>)}
       </div>
+      <button onClick={() => history.push('/')}>Back to Movie List</button>
     </div>
   );
 }
