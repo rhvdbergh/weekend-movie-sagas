@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 function AddMovie() {
+  // set up the useHistory hook to navigate
+  const history = useHistory();
+
   // local state to grab inputs from the user
   const [newMovieGenre, setNewMovieGenre] = useState();
 
@@ -41,6 +45,8 @@ function AddMovie() {
           </option>
         ))}
       </select>
+      <button onClick={() => history.push('/')}>Cancel</button>
+      <button>Save</button>
     </div>
   );
 }
