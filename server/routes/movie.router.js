@@ -61,4 +61,33 @@ router.post('/', (req, res) => {
     });
 });
 
+// GET route /api/movie/id to retrieve selected movie details
+router.get('/:id', (req, res) => {
+  console.log(`in the get with id`, req.params.id);
+  // build a search query to retrieve this movie details
+  // this will retrieve the movie with an array of the genres of that movie
+  let query = `
+  SELECT "movies"."id", "movies"."title", "movies"."poster", "movies"."description", ARRAY_AGG ( "genres"."name") "genres" FROM "movies" 
+  JOIN "movies_genres" ON "movies"."id" = "movies_genres"."movie_id"
+  JOIN "genres" ON "genres"."id" = "movies_genres"."genre_id"
+  WHERE "movies"."id" = $1
+  GROUP BY "movies"."id", "movies"."title", "movies"."poster", "movies"."description";
+  `;
+
+  // parameterize the inputs
+  let values = [req.params.id];
+
+  // run the sql query
+  pool
+    .query(query, values)
+    .then((response) => {
+      // we only want one movie, so send the first object in the array
+      res.send(response.rows[0]); // the movie will live in .rows
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
