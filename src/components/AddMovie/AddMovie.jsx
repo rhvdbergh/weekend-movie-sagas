@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 function AddMovie() {
+  // local state to grab inputs from the user
+  const [newMovieGenre, setNewMovieGenre] = useState();
+
   // set up the redux dispatch
   const dispatch = useDispatch();
 
   // retrieve the genres from the redux store
-  // TODO:
+  const genres = useSelector((store) => store.genres);
 
   // send a dispatch to fetch genres on page load
   useEffect(() => {
@@ -26,8 +29,17 @@ function AddMovie() {
         placeholder="Add Movie Description"
       ></textarea>
       {/* TODO: add dropdown here */}
-      <select name="genres" id="genres">
+      <select
+        name="genres"
+        id="genres"
+        onChange={(event) => setNewMovieGenre(event.target.value)}
+      >
         <option hidden>Select Genres</option>
+        {genres.map((genre) => (
+          <option key={genre.id} name={genre.name} value={genre.id}>
+            {genre.name}
+          </option>
+        ))}
       </select>
     </div>
   );
