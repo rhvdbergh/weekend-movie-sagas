@@ -31,6 +31,14 @@ function* fetchAllMovies() {
 // fetches the details of the selected movie from the server
 function* fetchSelectedMovie(action) {
   console.log(`in fetchSelectedMovie, fetching id`, action.payload);
+  try {
+    // do an axios call to our server to fetch data
+    const response = yield axios.get(`/api/movie/${action.payload}`);
+    // once we have the data, fire of an action so the reducer can store it
+    yield put({ type: 'SET_SELECTED_MOVIE', payload: response.data });
+  } catch (err) {
+    console.log('get selected movie error:', err);
+  }
 }
 
 // Create sagaMiddleware
