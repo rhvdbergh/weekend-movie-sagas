@@ -91,6 +91,8 @@ const selectedMovie = (state = {}, action) => {
   switch (action.type) {
     case 'SET_SELECTED_MOVIE':
       return action.payload;
+    case 'RESET_SELECTED_MOVIE':
+      return {};
     default:
       return state;
   }

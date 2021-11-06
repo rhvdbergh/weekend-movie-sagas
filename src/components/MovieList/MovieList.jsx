@@ -13,6 +13,9 @@ function MovieList() {
 
   useEffect(() => {
     dispatch({ type: 'FETCH_MOVIES' });
+    // in order for the old selected movie not to flash-display at first
+    // page load, we need to clear it here
+    dispatch({ type: 'RESET_SELECTED_MOVIE' });
   }, []);
 
   // move to the details page
