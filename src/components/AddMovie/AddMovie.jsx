@@ -55,7 +55,7 @@ function AddMovie() {
   };
 
   return (
-    <Container sx={{ mt: '50px', display: 'flex', justifyContent: 'center' }}>
+    <Container sx={{ mt: '30px', display: 'flex', justifyContent: 'center' }}>
       <Paper
         elevation="12"
         sx={{
@@ -67,7 +67,7 @@ function AddMovie() {
         }}
       >
         <FormControl sx={{ width: '100%' }}>
-          <Typography variant="h5" sx={{ mb: '20px' }}>
+          <Typography variant="h4" sx={{ mb: '30px' }}>
             Add a Movie
           </Typography>
           <TextField
