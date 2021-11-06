@@ -27,7 +27,7 @@ function MovieDetails() {
   return (
     <Container>
       <Box>
-        <Typography variant="h5">{movie.title}</Typography>
+        <Typography variant="h3">{movie.title}</Typography>
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ m: '30px' }}>
