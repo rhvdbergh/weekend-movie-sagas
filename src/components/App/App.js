@@ -1,18 +1,27 @@
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom';
 import './App.css';
 import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import AddMovie from '../AddMovie/AddMovie';
+import { Box, Container, Typography, ButtonGroup, Button } from '@mui/material';
 
 function App() {
+  // set up history to navigate
+  const history = useHistory();
+
   return (
-    <div className="App">
-      <h1>The Movies Saga!</h1>
+    <Container className="App">
+      <Typography variant="h2">The Movies Saga!</Typography>
       <Router>
-        <nav>
-          <Link to="/">Movie List</Link>
-          <Link to="/add">Add Movie</Link>
-        </nav>
+        <ButtonGroup variant="contained" sx={{ mt: '20px', mb: '30px' }}>
+          <Button onClick={() => history.push('/')}>Movie List</Button>
+          <Button onClick={() => history.push('/add')}>Add Movie</Button>
+        </ButtonGroup>
         <Route path="/" exact>
           <MovieList />
         </Route>
@@ -27,7 +36,7 @@ function App() {
           <AddMovie />
         </Route>
       </Router>
-    </div>
+    </Container>
   );
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './MovieList.css';
+import { Typography } from '@mui/material';
 
 function MovieList() {
   // set up the redux dispatch
@@ -20,19 +21,17 @@ function MovieList() {
 
   // move to the details page
   const showDetails = (event, movie) => {
-    console.log(`in show details for movie:`, movie.id);
     // navigate to this movie's details page
     history.push(`/details/${movie.id}`);
   };
 
   return (
     <main>
-      <h1>MovieList</h1>
       <section className="movies">
         {movies.map((movie) => {
           return (
             <div key={movie.id}>
-              <h3>{movie.title}</h3>
+              <Typography variant="h5">{movie.title}</Typography>
               <img
                 src={movie.poster}
                 alt={movie.title}
