@@ -1,6 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  Paper,
+} from '@mui/material';
 
 // initial state of newMovie
 const initialNewMovieState = {
@@ -30,7 +42,6 @@ function AddMovie() {
 
   const saveMovie = (event) => {
     event.preventDefault();
-    console.log(`in saveMovie, newMovie =`, newMovie);
     // validate whether a genre is selected
     if (newMovie.genre_id !== '') {
       dispatch({ type: 'ADD_MOVIE', payload: newMovie });
@@ -44,57 +55,99 @@ function AddMovie() {
   };
 
   return (
-    <div>
-      <h2>Add a Movie</h2>
-      <form onSubmit={saveMovie}>
-        <input
-          type="text"
-          placeholder="Movie Title"
-          required
-          value={newMovie.title}
-          onChange={(event) =>
-            setNewMovie({ ...newMovie, title: event.target.value })
-          }
-        />
-        <input
-          type="text"
-          required
-          placeholder="Movie Poster URL"
-          value={newMovie.poster}
-          onChange={(event) =>
-            setNewMovie({ ...newMovie, poster: event.target.value })
-          }
-        />
-        <textarea
-          name="description"
-          required
-          id=""
-          cols="30"
-          rows="10"
-          placeholder="Add Movie Description"
-          value={newMovie.description}
-          onChange={(event) =>
-            setNewMovie({ ...newMovie, description: event.target.value })
-          }
-        ></textarea>
-        <select
-          name="genres"
-          id="genres"
-          onChange={(event) =>
-            setNewMovie({ ...newMovie, genre_id: event.target.value })
-          }
+    <Container sx={{ mt: '50px', display: 'flex', justifyContent: 'center' }}>
+      <Paper
+        elevation="12"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          width: '700px',
+          p: '50px',
+        }}
+      >
+        <FormControl sx={{ width: '100%' }}>
+          <Typography variant="h5" sx={{ mb: '20px' }}>
+            Add a Movie
+          </Typography>
+          <TextField
+            sx={{ m: '10px' }}
+            type="text"
+            label="Movie Title"
+            required
+            value={newMovie.title}
+            onChange={(event) =>
+              setNewMovie({ ...newMovie, title: event.target.value })
+            }
+          />
+          <TextField
+            sx={{ m: '10px' }}
+            type="text"
+            required
+            label="Movie Poster URL"
+            value={newMovie.poster}
+            onChange={(event) =>
+              setNewMovie({ ...newMovie, poster: event.target.value })
+            }
+          />
+          <TextField
+            sx={{ m: '10px' }}
+            required
+            multiline
+            rows="6"
+            required
+            label="Add Movie Description"
+            value={newMovie.description}
+            onChange={(event) =>
+              setNewMovie({ ...newMovie, description: event.target.value })
+            }
+          ></TextField>
+        </FormControl>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            mt: '10px',
+          }}
         >
-          <option hidden>Select Genres</option>
-          {genres.map((genre) => (
-            <option key={genre.id} name={genre.name} value={genre.id}>
-              {genre.name}
-            </option>
-          ))}
-        </select>
-        <button onClick={() => history.push('/')}>Cancel</button>
-        <button type="submit">Save</button>
-      </form>
-    </div>
+          <FormControl sx={{ width: '53%' }}>
+            <InputLabel id="select-genre-label">Select Genre</InputLabel>
+            <Select
+              labelId="select-genre-label"
+              id="select-genre"
+              label="Select Genre"
+              value={newMovie.genre_id}
+              onChange={(event) =>
+                setNewMovie({ ...newMovie, genre_id: event.target.value })
+              }
+            >
+              {genres.map((genre) => (
+                <MenuItem key={genre.id} value={genre.id}>
+                  {genre.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button
+            sx={{ height: '56px', width: '21%' }}
+            variant="contained"
+            color="error"
+            onClick={() => history.push('/')}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={saveMovie}
+            sx={{ height: '56px', width: '21%' }}
+          >
+            Save
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
