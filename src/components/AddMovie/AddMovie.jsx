@@ -135,7 +135,7 @@ function AddMovie() {
             color="error"
             onClick={() => history.push('/')}
           >
-            Cancel
+            <Typography variant="h6">Cancel</Typography>
           </Button>
           <Button
             variant="contained"
@@ -143,7 +143,7 @@ function AddMovie() {
             onClick={saveMovie}
             sx={{ height: '56px', width: '21%' }}
           >
-            Save
+            <Typography variant="h6">Save</Typography>
           </Button>
         </Box>
       </Paper>
