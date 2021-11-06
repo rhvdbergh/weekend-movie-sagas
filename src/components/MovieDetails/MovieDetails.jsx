@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import { Container, Typography, Button, Box } from '@mui/material';
 
 function MovieDetails() {
   // set up the redux dispatch
@@ -24,19 +25,35 @@ function MovieDetails() {
   }, [id]);
 
   return (
-    <div>
-      <h3>{movie.title}</h3>
-      <div>
-        <img src={movie.poster} alt={movie.title} />
-      </div>
-      <div>
-        <p>Description: {movie.description}</p>
-        <p>Genres:</p>
-        {movie.genres &&
-          movie.genres.map((genre, index) => <p key={index}>{genre}</p>)}
-      </div>
-      <button onClick={() => history.push('/')}>Back to Movie List</button>
-    </div>
+    <Container>
+      <Box>
+        <Typography variant="h5">{movie.title}</Typography>
+      </Box>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ m: '30px' }}>
+          <img src={movie.poster} alt={movie.title} />
+        </Box>
+        <Box sx={{ mt: '50px' }}>
+          <Typography variant="subtitle1">
+            Description: {movie.description}
+          </Typography>
+          <Box sx={{ display: 'flex' }}>
+            <Typography variant="h6" sx={{ mt: '20px', mr: '23px' }}>
+              Genres:
+            </Typography>
+            {movie.genres &&
+              movie.genres.map((genre, index) => (
+                <Typography variant="subtitle1" key={index} sx={{ m: '23px' }}>
+                  {genre}
+                </Typography>
+              ))}
+          </Box>
+        </Box>
+      </Box>
+      <Button variant="contained" onClick={() => history.push('/')}>
+        Back to Movie List
+      </Button>
+    </Container>
   );
 }
 
