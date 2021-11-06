@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+// initial state of newMovie
+const initialNewMovieState = {
+  genre_id: '',
+  title: '',
+  poster: '',
+  description: '',
+};
+
 function AddMovie() {
   // set up the useHistory hook to navigate
   const history = useHistory();
 
   // local state to grab inputs from the user
-  const [newMovie, setNewMovie] = useState({
-    genre_id: '',
-    title: '',
-    poster: '',
-    description: '',
-  });
+  const [newMovie, setNewMovie] = useState(initialNewMovieState);
 
   // set up the redux dispatch
   const dispatch = useDispatch();
@@ -28,6 +31,16 @@ function AddMovie() {
   const saveMovie = (event) => {
     event.preventDefault();
     console.log(`in saveMovie, newMovie =`, newMovie);
+    // validate whether a genre is selected
+    if (newMovie.genre_id !== '') {
+      dispatch({ type: 'ADD_MOVIE', payload: newMovie });
+      // reset newMovie
+      setNewMovie(initialNewMovieState);
+      // navigate back to the home page
+      history.push('/');
+    } else {
+      alert(`Please select a movie genre.`);
+    }
   };
 
   return (
@@ -68,7 +81,7 @@ function AddMovie() {
           name="genres"
           id="genres"
           onChange={(event) =>
-            setNewMovie({ ...newMovie, genre: event.target.value })
+            setNewMovie({ ...newMovie, genre_id: event.target.value })
           }
         >
           <option hidden>Select Genres</option>
