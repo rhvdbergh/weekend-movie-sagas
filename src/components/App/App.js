@@ -19,8 +19,8 @@ function App() {
       <Typography variant="h2">The Movies Saga!</Typography>
       <Router>
         <ButtonGroup variant="contained" sx={{ mt: '20px', mb: '30px' }}>
-          <Button onClick={() => history.push('/')}>Movie List</Button>
-          <Button onClick={() => history.push('/add')}>Add Movie</Button>
+          <Link to="/">Movie List</Link>
+          <Link to="/add">Add Movie</Link>
         </ButtonGroup>
         <Route path="/" exact>
           <MovieList />
