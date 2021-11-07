@@ -10,6 +10,9 @@ function* rootSaga() {
   yield takeEvery('ADD_MOVIE', addMovie);
   yield takeEvery('UPDATE_MOVIE', updateMovie);
   yield takeEvery('SEARCH_MOVIE_TITLE', searchMovies);
+  yield takeEvery('VALIDATE_LOGIN', validateLogin);
+  yield takeEvery('DELETE_GENRE', deleteGenre);
+  yield takeEvery('ADD_GENRE', addGenre);
 }
 
 function* fetchAllMovies() {
@@ -75,6 +78,42 @@ function* updateMovie(action) {
     );
   } catch (err) {
     console.log('update movie error:', err);
+  }
+}
+
+// validates whether the user is logged in
+function* validateLogin(action) {
+  try {
+    // this is not really how it should be done, with queries
+    // we should use more secure information!
+    // but this is what the assignment calls for
+    const response = yield axios.get(
+      `/api/login?u=${action.payload.username}&p=${action.payload.password}`
+    );
+    yield put({ type: 'SET_USER_LOGIN', payload: response.data.login });
+  } catch (err) {
+    console.log('login response error:', err);
+  }
+}
+
+// deletes a genre on the db through the server
+function* deleteGenre(action) {
+  try {
+    console.log(`here the action.payload is`, action.payload);
+    yield axios.delete(`/api/genre/${action.payload}`);
+    yield put({ type: 'FETCH_GENRES' });
+  } catch (err) {
+    console.log('delete genre  error:', err);
+  }
+}
+
+// adds a single genre
+function* addGenre(action) {
+  try {
+    yield axios.post(`/api/genre`, { genre: action.payload });
+    yield put({ type: 'FETCH_GENRES' });
+  } catch (err) {
+    console.log('add genre  error:', err);
   }
 }
 

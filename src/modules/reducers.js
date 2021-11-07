@@ -35,6 +35,16 @@ const selectedMovie = (state = { genres: [] }, action) => {
   }
 };
 
+// checks whether admin is logged in
+const isLoggedIn = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_USER_LOGIN':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -44,6 +54,7 @@ const storeInstance = createStore(
     movies,
     genres,
     selectedMovie,
+    isLoggedIn,
   }),
   // Add sagaMiddleware to our store
   applyMiddleware(sagaMiddleware, logger)
