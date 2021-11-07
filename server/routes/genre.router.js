@@ -24,17 +24,34 @@ router.get('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   console.log(`in /api/genre/:id with id`, req.params.id);
   // build the sql query
+  // first delete all references in the "movies_genres" table
   let query = `
-    DELETE FROM "genres"
-    WHERE "id" = $1;
+    DELETE FROM "movies_genres" 
+    WHERE "genre_id" = $1;
   `;
+
   pool
     .query(query, [req.params.id])
     .then((response) => {
-      res.sendStatus(200);
+      // now remove any references in the "genres" table
+      let query = `
+         DELETE FROM "genres"
+          WHERE "id" = $1;
+      `;
+
+      // run the query
+      pool
+        .query(query, [req.params.id])
+        .then((response) => {
+          res.sendStatus(200); // both the movies_genres and genres references have been deleted
+        })
+        .catch((err) => {
+          console.log('ERROR: delete a genre for genres table', err);
+          res.sendStatus(500);
+        });
     })
     .catch((err) => {
-      console.log('ERROR: delete a genre', err);
+      console.log('ERROR: delete a genre for movies_genres table', err);
       res.sendStatus(500);
     });
 });
