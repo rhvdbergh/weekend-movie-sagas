@@ -48,7 +48,7 @@ function AdminLogin() {
           />
           <TextField
             sx={{ m: '10px' }}
-            type="text"
+            type="password"
             variant="standard"
             label="Password"
             required

@@ -74,12 +74,14 @@ function GenreForm() {
                 type: 'ADD_GENRE',
                 payload: genre,
               });
+              // reset the input field
+              setGenre('');
             }}
           >
             Add Genre
           </Button>
         </ButtonGroup>
-        <Typography variant="h4" sx={{ mt: '40px' }}>
+        <Typography variant="h4" sx={{ mt: '40px', mb: '40px' }}>
           Remove Genres
         </Typography>
         <Stack direction="row" sx={{ display: 'flex', flexWrap: 'wrap' }}>
