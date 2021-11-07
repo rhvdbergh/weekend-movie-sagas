@@ -54,7 +54,19 @@ function MovieForm({ inEditMode }) {
   // once we have a selected movie, set the movie page to that movie
   useEffect(() => {
     if (inEditMode) {
-      setNewMovie(selectedMovie);
+      // to set the selected options for edit mode,
+      // we need the genre ids of the selectedMovie's genres
+      // but we only have the names, so we have to filter through
+      // and return all the corresponding genres if their names match
+      // but we have to supply here an arry of numbers, not objects
+      // so we have to do a map on the returned array, which contains objects
+      // and pick out only the ids from those objects
+      setNewMovie({
+        ...selectedMovie,
+        genres: genres
+          .filter((genre) => selectedMovie.genres.includes(genre.name))
+          .map((genre) => genre.id),
+      });
     }
   }, [selectedMovie]);
 
@@ -62,12 +74,18 @@ function MovieForm({ inEditMode }) {
     event.preventDefault();
     // validate whether each field is filled out
     if (
-      newMovie.genre_ids.length > 0 &&
+      newMovie.genres.length > 0 &&
       newMovie.title !== '' &&
       newMovie.poster !== '' &&
       newMovie.description !== ''
     ) {
-      dispatch({ type: 'ADD_MOVIE', payload: newMovie });
+      // if in add mode, add this movie
+      if (!inEditMode) {
+        dispatch({ type: 'ADD_MOVIE', payload: newMovie });
+      } else {
+        // we're in edit mode, so update this movie
+        dispatch({ type: 'UPDATE_MOVIE', payload: newMovie });
+      }
       // reset newMovie
       setNewMovie(initialNewMovieState);
       // navigate back to the home page
@@ -142,18 +160,7 @@ function MovieForm({ inEditMode }) {
               id="select-genres"
               label="Select Genres"
               multiple
-              value={
-                // to set the selected options for edit mode,
-                // we need the genre ids of the selectedMovie's genres
-                // but we only have the names, so we have to filter through
-                // and return all the corresponding genres if their names match
-                // but we have to supply here an arry of numbers, not objects
-                // so we have to do a map on the returned array, which contains objects
-                // and pick out only the ids from those objects
-                genres
-                  .filter((genre) => selectedMovie.genres.includes(genre.name))
-                  .map((genre) => genre.id)
-              }
+              value={newMovie.genres}
               onChange={(event) =>
                 setNewMovie({ ...newMovie, genres: event.target.value })
               }
