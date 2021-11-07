@@ -54,9 +54,22 @@ function MovieDetails() {
           </Box>
         </Box>
       </Box>
-      <Button variant="contained" onClick={() => history.push('/')}>
-        Back to Movie List
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+        <Button
+          variant="contained"
+          onClick={() => history.push(`/edit/${id}`)}
+          sx={{ mr: '20px' }}
+        >
+          Edit Movie
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => history.push('/')}
+          sx={{ ml: '20px' }}
+        >
+          Back to Movie List
+        </Button>
+      </Box>
     </Container>
   );
 }

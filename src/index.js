@@ -21,6 +21,7 @@ function* rootSaga() {
   yield takeEvery('FETCH_SELECTED_MOVIE', fetchSelectedMovie);
   yield takeEvery('FETCH_GENRES', fetchGenres);
   yield takeEvery('ADD_MOVIE', addMovie);
+  yield takeEvery('UPDATE_MOVIE', updateMovie);
 }
 
 function* fetchAllMovies() {
@@ -62,10 +63,21 @@ function* fetchGenres(action) {
 function* addMovie(action) {
   try {
     const response = yield axios.post('/api/movie', action.payload);
-    // navigate back to the home page
-    yield history.push('/');
   } catch (err) {
     console.log('add movie error:', err);
+  }
+}
+
+// updates a movie on the database via the server
+function* updateMovie(action) {
+  try {
+    console.log(`in updateMovie, and this is the movie object`, action.payload);
+    const response = yield axios.put(
+      `/api/movie/${action.payload.id}`,
+      action.payload
+    );
+  } catch (err) {
+    console.log('update movie error:', err);
   }
 }
 
@@ -93,7 +105,7 @@ const genres = (state = [], action) => {
 };
 
 // Used to store the movie for which details are being viewed
-const selectedMovie = (state = {}, action) => {
+const selectedMovie = (state = { genres: [] }, action) => {
   switch (action.type) {
     case 'SET_SELECTED_MOVIE':
       return action.payload;

@@ -35,28 +35,62 @@ router.post('/', (req, res) => {
 
       const createdMovieId = result.rows[0].id;
 
-      // Now handle the genre reference
-      const insertMovieGenreQuery = `
-      INSERT INTO "movies_genres" ("movie_id", "genre_id")
-      VALUES  ($1, $2);
-      `;
-      // SECOND QUERY ADDS GENRE FOR THAT NEW MOVIE
-      pool
-        .query(insertMovieGenreQuery, [createdMovieId, req.body.genre_id])
-        .then((result) => {
-          //Now that both are done, send back success!
-          res.sendStatus(201);
-        })
-        .catch((err) => {
-          // catch for second query
-          console.log(err);
-          res.sendStatus(500);
-        });
+      // Now handle the genre references
+      // since this is the same procedure for update and add,
+      // we extract this code into a helper function
+      // we pass it req and res and the id of the movie in the db
+      insertGenres(req, createdMovieId, res);
 
       // Catch for first query
     })
     .catch((err) => {
       console.log(err);
+      res.sendStatus(500);
+    });
+});
+
+router.put('/:id', (req, res) => {
+  console.log(`in the put with id`, req.params.id);
+  const updateMovieQuery = `
+    UPDATE "movies"
+    SET "title" = $1, "poster" = $2, description = $3
+    WHERE "id" = $4;
+  `;
+
+  // do the sql query
+  pool
+    .query(updateMovieQuery, [
+      req.body.title,
+      req.body.poster,
+      req.body.description,
+      req.params.id,
+    ])
+    .then((response) => {
+      // now we'll have to do a second query to update the genres
+      // first we'll have to delete all the current entries - we don't
+      // know what has changed; then we update with the new genres
+      let deleteQuery = `
+        DELETE FROM "movies_genres"
+        WHERE "movie_id" = $1;
+      `;
+
+      pool
+        .query(deleteQuery, [req.params.id])
+        .then((response) => {
+          // since this is the same procedure for update and add,
+          // we extract this code into a helper function
+          // we pass it req and res and the id of the movie in the db
+          insertGenres(req, req.params.id, res);
+        })
+        .catch((err) => {
+          // second catch, for delete
+          console.log(`error in the delete catch on update`, err);
+          res.sendStatus(500);
+        });
+    })
+    .catch((err) => {
+      // catch for the first query
+      console.log(`error in the update query on update`, err);
       res.sendStatus(500);
     });
 });
@@ -89,5 +123,57 @@ router.get('/:id', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+// this function is used by both the post new movie and update movie routes
+function insertGenres(req, createdMovieId, res) {
+  // build the insertMoviesGenreQuery, adding as many genres
+  // as necessary
+
+  // the code below will result in the following for a movie with two genres:
+  /*
+        INSERT INTO "movies_genres" ("movie_id", "genre_id")
+        VALUES ($1, $2), ($1, $3);
+      */
+  // and the genreIdValues will hold the values sent from the user
+  // in order: $2 = genreIds[0], $3 = genreIds[1], etc.
+
+  // first we have the insert statement
+  let insertMovieGenreQuery = `
+        INSERT INTO "movies_genres" ("movie_id", "genre_id")
+        VALUES
+      `;
+  // then we create an array variable to hold the values of SQL queries from $2 onwards
+  // depending on how many genres we have
+  const genreIdValues = [];
+  // then we add as many genres as there are in the array
+  for (let i = 0; i < req.body.genres.length; i++) {
+    // we want to start counting from 2 onwards to form $2 etc., so add 2 here to i
+    insertMovieGenreQuery += ` ($1, $${i + 2})`;
+    // add a comma to each to separate the sql values, but not for the last one
+    if (i === req.body.genres.length - 1) {
+      // for the final one, we want to add ;
+      insertMovieGenreQuery += `;`;
+    } else {
+      insertMovieGenreQuery += `,`;
+    }
+    // now push the value associated with that index to the genreIdValues
+    genreIdValues.push(req.body.genres[i]);
+  }
+
+  console.log(`this is the insert movie query:`, insertMovieGenreQuery);
+
+  // SECOND QUERY ADDS GENRE FOR THAT NEW MOVIE
+  pool
+    .query(insertMovieGenreQuery, [createdMovieId, ...genreIdValues])
+    .then((result) => {
+      //Now that both are done, send back success!
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      // catch for second query
+      console.log(err);
+      res.sendStatus(500);
+    });
+}
 
 module.exports = router;
