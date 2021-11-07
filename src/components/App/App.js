@@ -1,16 +1,11 @@
-import {
-  HashRouter as Router,
-  Route,
-  Link,
-  useHistory,
-} from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import MovieForm from '../MovieForm/MovieForm';
-import { Box, Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
-import SearchBar from '../SearchBar/SearchBar';
+import AdminPage from '../AdminPage/AdminPage';
 
 function App() {
   return (
@@ -32,10 +27,18 @@ function App() {
         <Route path="/add" exact>
           <Navbar />
           <MovieForm inEditMode={false} />
+
+          {/* Edit Movie page */}
         </Route>
         <Route path="/edit/:id">
           <Navbar />
           <MovieForm inEditMode={true} />
+        </Route>
+
+        {/* Admin page */}
+        <Route path="/admin" exactly>
+          <Navbar />
+          <AdminPage />
         </Route>
       </Router>
     </Container>

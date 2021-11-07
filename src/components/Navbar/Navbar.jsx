@@ -15,6 +15,9 @@ function Navbar({ displaySearch }) {
         <Button variant="contained" onClick={() => history.push('/add')}>
           Add Movie
         </Button>
+        <Button variant="contained" onClick={() => history.push('/admin')}>
+          Admin
+        </Button>
       </ButtonGroup>
       {/* we do this conditional to display an empty box instead of search to
       keep the spacing consistent */}

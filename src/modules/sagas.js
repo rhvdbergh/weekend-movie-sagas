@@ -10,6 +10,7 @@ function* rootSaga() {
   yield takeEvery('ADD_MOVIE', addMovie);
   yield takeEvery('UPDATE_MOVIE', updateMovie);
   yield takeEvery('SEARCH_MOVIE_TITLE', searchMovies);
+  yield takeEvery('VALIDATE_LOGIN', validateLogin);
 }
 
 function* fetchAllMovies() {
@@ -75,6 +76,21 @@ function* updateMovie(action) {
     );
   } catch (err) {
     console.log('update movie error:', err);
+  }
+}
+
+// validates whether the user is logged in
+function* validateLogin(action) {
+  try {
+    // this is not really how it should be done, with queries
+    // we should use more secure information!
+    // but this is what the assignment calls for
+    const response = yield axios.get(
+      `/api/login?u=${action.payload.username}&p=${action.payload.password}`
+    );
+    yield put({ type: 'SET_USER_LOGIN', payload: response.data.login });
+  } catch (err) {
+    console.log('login response error:', err);
   }
 }
 
