@@ -3,9 +3,29 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 router.get('/', (req, res) => {
-  const query = `SELECT * FROM movies ORDER BY "title" ASC LIMIT 10`;
+  // if there is a req.params.search, we send a different query:
+
+  console.log(`this is req.query`, req.query.search);
+  // this is the default query
+  let query = `SELECT * FROM movies ORDER BY "title" ASC LIMIT 10`;
+
+  // we also want to use the same pool, no need to do double duty
+  // we're going to use a spread to enter our arguments
+  let params = [query];
+
+  // but if there is a req.body.search, we will do:
+  if (req.query.search) {
+    query = `SELECT * FROM "movies" WHERE "title" ILIKE $1 ORDER BY "title" ASC`;
+    // there will be no limit to the above query, as the user wants all the titles by that search term
+    // we want to also pass this as an argument to pool.query,
+    // including the wildcard operators, so:
+    params = [query, [`%${req.query.search}%`]];
+  }
+
+  console.log(`this is params`, params);
+
   pool
-    .query(query)
+    .query(...params) // using a spread to have dynamic arguments
     .then((result) => {
       res.send(result.rows);
     })
