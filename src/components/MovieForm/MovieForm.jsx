@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -22,9 +22,16 @@ const initialNewMovieState = {
   description: '',
 };
 
-function AddMovie() {
+function MovieForm({ inEditMode }) {
   // set up the useHistory hook to navigate
   const history = useHistory();
+
+  // retrieve the genres from the redux store
+  const genres = useSelector((store) => store.genres);
+  // if this is in edit mode, retrieve the movie to be edited from the redux store
+  // also, set the id param with the useParams hook
+  const { id } = useParams();
+  const movie = useSelector((store) => store.selectedMovie);
 
   // local state to grab inputs from the user
   const [newMovie, setNewMovie] = useState(initialNewMovieState);
@@ -32,13 +39,21 @@ function AddMovie() {
   // set up the redux dispatch
   const dispatch = useDispatch();
 
-  // retrieve the genres from the redux store
-  const genres = useSelector((store) => store.genres);
-
   // send a dispatch to fetch genres on page load
   useEffect(() => {
     dispatch({ type: 'FETCH_GENRES' });
+    // if in edit mode, retrieve the selected movie
+    if (inEditMode) {
+      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: id });
+    }
   }, []);
+
+  useEffect(() => {
+    if (inEditMode) {
+      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: id });
+      setNewMovie(movie);
+    }
+  }, [id]);
 
   const saveMovie = (event) => {
     event.preventDefault();
@@ -66,7 +81,7 @@ function AddMovie() {
       >
         <FormControl sx={{ width: '100%' }}>
           <Typography variant="h4" sx={{ mb: '30px' }}>
-            Add a Movie
+            {inEditMode ? 'Edit' : 'Add'} a Movie
           </Typography>
           <TextField
             sx={{ m: '10px' }}
@@ -149,4 +164,4 @@ function AddMovie() {
   );
 }
 
-export default AddMovie;
+export default MovieForm;

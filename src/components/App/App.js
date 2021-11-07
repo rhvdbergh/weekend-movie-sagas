@@ -7,7 +7,7 @@ import {
 import './App.css';
 import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
-import AddMovie from '../AddMovie/AddMovie';
+import MovieForm from '../MovieForm/MovieForm';
 import { Box, Container, Typography } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 
@@ -28,7 +28,10 @@ function App() {
 
         {/* Add Movie page */}
         <Route path="/add" exact>
-          <AddMovie />
+          <MovieForm inEditMode={false} />
+        </Route>
+        <Route path="/edit/:id">
+          <MovieForm inEditMode={true} />
         </Route>
       </Router>
     </Container>
