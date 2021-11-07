@@ -16,7 +16,7 @@ import {
 
 // initial state of newMovie
 const initialNewMovieState = {
-  genre_id: '',
+  genre_id: [],
   title: '',
   poster: '',
   description: '',
@@ -130,6 +130,7 @@ function MovieForm({ inEditMode }) {
               labelId="select-genre-label"
               id="select-genre"
               label="Select Genre"
+              multiple
               value={newMovie.genre_id}
               onChange={(event) =>
                 setNewMovie({ ...newMovie, genre_id: event.target.value })
