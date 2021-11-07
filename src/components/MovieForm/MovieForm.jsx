@@ -16,7 +16,7 @@ import {
 
 // initial state of newMovie
 const initialNewMovieState = {
-  genre_id: [],
+  genre_ids: [],
   title: '',
   poster: '',
   description: '',
@@ -30,7 +30,7 @@ function MovieForm({ inEditMode }) {
   const genres = useSelector((store) => store.genres);
   // if this is in edit mode, retrieve the movie to be edited from the redux store
   // also, set the id param with the useParams hook
-  const { id } = useParams();
+  const { id: selectedMovieId } = useParams();
   const selectedMovie = useSelector((store) => store.selectedMovie);
 
   // local state to grab inputs from the user
@@ -44,26 +44,32 @@ function MovieForm({ inEditMode }) {
     dispatch({ type: 'FETCH_GENRES' });
     // if in edit mode, retrieve the selected movie
     if (inEditMode) {
-      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: id });
+      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: selectedMovieId });
     }
   }, []);
 
   useEffect(() => {
     if (inEditMode) {
-      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: id });
+      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: selectedMovieId });
       setNewMovie(selectedMovie);
     }
-  }, [id]);
+  }, [selectedMovieId]);
 
   const saveMovie = (event) => {
     event.preventDefault();
-    // validate whether a genre is selected
-    if (newMovie.genre_id !== '') {
+    // validate whether each field is filled out
+    if (
+      newMovie.genre_ids.length > 0 &&
+      newMovie.title !== '' &&
+      newMovie.poster !== '' &&
+      newMovie.description !== ''
+    ) {
       dispatch({ type: 'ADD_MOVIE', payload: newMovie });
       // reset newMovie
       setNewMovie(initialNewMovieState);
     } else {
-      alert(`Please select a movie genre.`);
+      // one of the fields were not filled out
+      alert(`Please fill out all the fields and select at least one genre.`);
     }
   };
 
@@ -125,18 +131,18 @@ function MovieForm({ inEditMode }) {
           }}
         >
           <FormControl sx={{ width: '53%' }}>
-            <InputLabel id="select-genre-label">Select Genre</InputLabel>
+            <InputLabel id="select-genres-label">Select Genre</InputLabel>
             <Select
-              labelId="select-genre-label"
-              id="select-genre"
-              label="Select Genre"
+              labelId="select-genres-label"
+              id="select-genres"
+              label="Select Genres"
               multiple
-              value={newMovie.genre_id}
+              value={newMovie.genre_ids}
               onChange={(event) =>
-                setNewMovie({ ...newMovie, genre_id: event.target.value })
+                setNewMovie({ ...newMovie, genre_ids: event.target.value })
               }
             >
-              {genres.map((genre) => (
+              {genres.map((genre, index) => (
                 <MenuItem key={genre.id} value={genre.id}>
                   {genre.name}
                 </MenuItem>
