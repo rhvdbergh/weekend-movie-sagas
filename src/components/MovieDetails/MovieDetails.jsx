@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { Container, Typography, Button, Box } from '@mui/material';
+import { Container, Typography, Button, Box, CardMedia } from '@mui/material';
 
 function MovieDetails() {
   // set up the redux dispatch
@@ -31,7 +31,11 @@ function MovieDetails() {
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ m: '30px' }}>
-          <img src={movie.poster} alt={movie.title} />
+          <CardMedia
+            image={movie.poster}
+            alt={movie.title}
+            sx={{ width: '185px', height: '272px' }}
+          />
         </Box>
         <Box sx={{ mt: '50px' }}>
           <Typography variant="subtitle1">
