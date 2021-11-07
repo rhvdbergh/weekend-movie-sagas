@@ -93,6 +93,10 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+  console.log(`in the put with id`, req.params.id);
+});
+
 // GET route /api/movie/id to retrieve selected movie details
 router.get('/:id', (req, res) => {
   console.log(`in the get with id`, req.params.id);

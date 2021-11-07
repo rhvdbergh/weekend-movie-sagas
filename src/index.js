@@ -21,6 +21,7 @@ function* rootSaga() {
   yield takeEvery('FETCH_SELECTED_MOVIE', fetchSelectedMovie);
   yield takeEvery('FETCH_GENRES', fetchGenres);
   yield takeEvery('ADD_MOVIE', addMovie);
+  yield takeEvery('UPDATE_MOVIE', updateMovie);
 }
 
 function* fetchAllMovies() {
@@ -64,6 +65,19 @@ function* addMovie(action) {
     const response = yield axios.post('/api/movie', action.payload);
   } catch (err) {
     console.log('add movie error:', err);
+  }
+}
+
+// updates a movie on the database via the server
+function* updateMovie(action) {
+  try {
+    console.log(`in updateMovie, and this is the movie object`, action.payload);
+    const response = yield axios.put(
+      `/api/movie/${action.payload.id}`,
+      action.payload
+    );
+  } catch (err) {
+    console.log('update movie error:', err);
   }
 }
 
