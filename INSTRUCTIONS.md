@@ -89,7 +89,7 @@ As one of your last projects, it's possible you will be sharing this with employ
   - [x] Research cards for your movie posters on the list page
   - [ ] Research grids for your movie posters on the Movie List page
 - [x] Commit your code frequently! You should have at 15+ commits on a project of this size. Use branches to help break down your features.
-- [ ] Comment your code.
+- [x] Comment your code.
 - [ ] Update this README to include a description of the project in your own words.
 
 ---
@@ -126,4 +126,4 @@ The edit page should have the buttons:
 - [x (on edit page)] Allow the user to add a genre to a movie.
 - [x (on edit page, but there must be at least one genre)] Allow the user to remove a genre from a movie.
 - [x] Only display the top 10 movies, and allow the user to search for movie titles with a search bar on the home page (you can do this on the client side or the server side, server side is a bigger stretch, but good practice).
-- [ ] Create an `Admin` page. Add a link from the `Home` page to the `Admin` page. The page should initially display a login form (an input for username and an input for password). When the user enters the correct username (`camera`) and password (`action`), the page should display a form to add genres to the database, and a list of all of the genres with an `x` to remove them from the database. Note: This isn't actually secure, but it's pretty fun, and really good practice.
+- [x] Create an `Admin` page. Add a link from the `Home` page to the `Admin` page. The page should initially display a login form (an input for username and an input for password). When the user enters the correct username (`camera`) and password (`action`), the page should display a form to add genres to the database, and a list of all of the genres with an `x` to remove them from the database. Note: This isn't actually secure, but it's pretty fun, and really good practice.
