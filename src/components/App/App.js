@@ -8,7 +8,8 @@ import './App.css';
 import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import AddMovie from '../AddMovie/AddMovie';
-import { Box, Container, Typography, ButtonGroup, Button } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
+import Navbar from '../Navbar/Navbar';
 
 function App() {
   // set up history to navigate
@@ -18,10 +19,7 @@ function App() {
     <Container className="App">
       <Typography variant="h2">The Movies Saga!</Typography>
       <Router>
-        <ButtonGroup variant="contained" sx={{ mt: '20px', mb: '30px' }}>
-          <Link to="/">Movie List</Link>
-          <Link to="/add">Add Movie</Link>
-        </ButtonGroup>
+        <Navbar />
         <Route path="/" exact>
           <MovieList />
         </Route>
