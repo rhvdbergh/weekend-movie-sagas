@@ -186,7 +186,9 @@ function MovieForm({ inEditMode }) {
             onClick={saveMovie}
             sx={{ height: '56px', width: '21%' }}
           >
-            <Typography variant="h6">Save</Typography>
+            <Typography variant="h6">
+              {inEditMode ? `Update` : `Save`}
+            </Typography>
           </Button>
         </Box>
       </Paper>
