@@ -62,8 +62,6 @@ function* fetchGenres(action) {
 function* addMovie(action) {
   try {
     const response = yield axios.post('/api/movie', action.payload);
-    // navigate back to the home page
-    yield history.push('/');
   } catch (err) {
     console.log('add movie error:', err);
   }

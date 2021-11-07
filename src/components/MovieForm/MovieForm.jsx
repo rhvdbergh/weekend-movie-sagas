@@ -50,7 +50,6 @@ function MovieForm({ inEditMode }) {
 
   useEffect(() => {
     if (inEditMode) {
-      dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: selectedMovieId });
       setNewMovie(selectedMovie);
     }
   }, [selectedMovieId]);
@@ -67,6 +66,8 @@ function MovieForm({ inEditMode }) {
       dispatch({ type: 'ADD_MOVIE', payload: newMovie });
       // reset newMovie
       setNewMovie(initialNewMovieState);
+      // navigate back to the home page
+      history.push('/');
     } else {
       // one of the fields were not filled out
       alert(`Please fill out all the fields and select at least one genre.`);
@@ -76,7 +77,7 @@ function MovieForm({ inEditMode }) {
   return (
     <Container sx={{ mt: '30px', display: 'flex', justifyContent: 'center' }}>
       <Paper
-        elevation="12"
+        elevation={12}
         sx={{
           display: 'flex',
           flexDirection: 'column',
