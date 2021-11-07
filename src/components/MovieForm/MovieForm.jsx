@@ -31,7 +31,7 @@ function MovieForm({ inEditMode }) {
   // if this is in edit mode, retrieve the movie to be edited from the redux store
   // also, set the id param with the useParams hook
   const { id } = useParams();
-  const movie = useSelector((store) => store.selectedMovie);
+  const selectedMovie = useSelector((store) => store.selectedMovie);
 
   // local state to grab inputs from the user
   const [newMovie, setNewMovie] = useState(initialNewMovieState);
@@ -51,7 +51,7 @@ function MovieForm({ inEditMode }) {
   useEffect(() => {
     if (inEditMode) {
       dispatch({ type: 'FETCH_SELECTED_MOVIE', payload: id });
-      setNewMovie(movie);
+      setNewMovie(selectedMovie);
     }
   }, [id]);
 
