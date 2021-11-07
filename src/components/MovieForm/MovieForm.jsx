@@ -16,7 +16,7 @@ import {
 
 // initial state of newMovie for add mode
 const initialNewMovieState = {
-  genres: [0],
+  genres: [],
   title: '',
   poster: '',
   description: '',

@@ -105,7 +105,7 @@ const genres = (state = [], action) => {
 };
 
 // Used to store the movie for which details are being viewed
-const selectedMovie = (state = { genres: [0] }, action) => {
+const selectedMovie = (state = { genres: [] }, action) => {
   switch (action.type) {
     case 'SET_SELECTED_MOVIE':
       return action.payload;
