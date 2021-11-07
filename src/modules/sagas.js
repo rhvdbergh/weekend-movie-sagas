@@ -9,6 +9,7 @@ function* rootSaga() {
   yield takeEvery('FETCH_GENRES', fetchGenres);
   yield takeEvery('ADD_MOVIE', addMovie);
   yield takeEvery('UPDATE_MOVIE', updateMovie);
+  yield takeEvery('SEARCH_MOVIE_TITLE', searchMovies);
 }
 
 function* fetchAllMovies() {
@@ -19,6 +20,15 @@ function* fetchAllMovies() {
     yield put({ type: 'SET_MOVIES', payload: movies.data });
   } catch {
     console.log('get all error');
+  }
+}
+
+function* searchMovies(action) {
+  try {
+    const movies = yield axios.get(`/api/movie?search=${action.payload}`);
+    yield put({ type: 'SET_MOVIES', payload: movies.data });
+  } catch {
+    console.log('search by title error in searchMovies', err);
   }
 }
 
