@@ -14,14 +14,16 @@ import {
   Paper,
 } from '@mui/material';
 
-// initial state of newMovie
+// initial state of newMovie for add mode
 const initialNewMovieState = {
-  genre_ids: [],
+  genres: [0],
   title: '',
   poster: '',
   description: '',
 };
 
+// this form is used both to add and edit movies
+// the inEditMode prop tells us which mode we're in
 function MovieForm({ inEditMode }) {
   // set up the useHistory hook to navigate
   const history = useHistory();
@@ -30,8 +32,8 @@ function MovieForm({ inEditMode }) {
   const genres = useSelector((store) => store.genres);
   // if this is in edit mode, retrieve the movie to be edited from the redux store
   // also, set the id param with the useParams hook
-  const { id: selectedMovieId } = useParams();
   const selectedMovie = useSelector((store) => store.selectedMovie);
+  const { id: selectedMovieId } = useParams();
 
   // local state to grab inputs from the user
   const [newMovie, setNewMovie] = useState(initialNewMovieState);
@@ -40,6 +42,7 @@ function MovieForm({ inEditMode }) {
   const dispatch = useDispatch();
 
   // send a dispatch to fetch genres on page load
+  // also, fetch selected movie if in edit mode
   useEffect(() => {
     dispatch({ type: 'FETCH_GENRES' });
     // if in edit mode, retrieve the selected movie
@@ -48,11 +51,12 @@ function MovieForm({ inEditMode }) {
     }
   }, []);
 
+  // once we have a selected movie, set the movie page to that movie
   useEffect(() => {
     if (inEditMode) {
       setNewMovie(selectedMovie);
     }
-  }, [selectedMovieId]);
+  }, [selectedMovie]);
 
   const saveMovie = (event) => {
     event.preventDefault();
@@ -138,12 +142,23 @@ function MovieForm({ inEditMode }) {
               id="select-genres"
               label="Select Genres"
               multiple
-              value={newMovie.genre_ids}
+              value={
+                // to set the selected options for edit mode,
+                // we need the genre ids of the selectedMovie's genres
+                // but we only have the names, so we have to filter through
+                // and return all the corresponding genres if their names match
+                // but we have to supply here an arry of numbers, not objects
+                // so we have to do a map on the returned array, which contains objects
+                // and pick out only the ids from those objects
+                genres
+                  .filter((genre) => selectedMovie.genres.includes(genre.name))
+                  .map((genre) => genre.id)
+              }
               onChange={(event) =>
-                setNewMovie({ ...newMovie, genre_ids: event.target.value })
+                setNewMovie({ ...newMovie, genres: event.target.value })
               }
             >
-              {genres.map((genre, index) => (
+              {genres.map((genre) => (
                 <MenuItem key={genre.id} value={genre.id}>
                   {genre.name}
                 </MenuItem>
