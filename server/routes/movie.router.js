@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 router.get('/', (req, res) => {
-  const query = `SELECT * FROM movies ORDER BY "title" ASC`;
+  const query = `SELECT * FROM movies ORDER BY "title" ASC LIMIT 10`;
   pool
     .query(query)
     .then((result) => {
@@ -135,7 +135,7 @@ function insertGenres(req, createdMovieId, res) {
         VALUES ($1, $2), ($1, $3);
       */
   // and the genreIdValues will hold the values sent from the user
-  // in order: $2 = genreIds[0], $3 = genreIds[1], etc.
+  // in order: $2 = genreIdValues[0], $3 = genreIdValues[1], etc.
 
   // first we have the insert statement
   let insertMovieGenreQuery = `
