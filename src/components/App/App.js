@@ -12,9 +12,6 @@ import { Box, Container, Typography } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 
 function App() {
-  // set up history to navigate
-  const history = useHistory();
-
   return (
     <Container className="App">
       <Typography variant="h2">The Movies Saga!</Typography>
