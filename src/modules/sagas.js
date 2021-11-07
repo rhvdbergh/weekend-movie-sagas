@@ -11,6 +11,8 @@ function* rootSaga() {
   yield takeEvery('UPDATE_MOVIE', updateMovie);
   yield takeEvery('SEARCH_MOVIE_TITLE', searchMovies);
   yield takeEvery('VALIDATE_LOGIN', validateLogin);
+  yield takeEvery('DELETE_GENRE', deleteGenre);
+  yield takeEvery('ADD_GENRE', addGenre);
 }
 
 function* fetchAllMovies() {
@@ -91,6 +93,27 @@ function* validateLogin(action) {
     yield put({ type: 'SET_USER_LOGIN', payload: response.data.login });
   } catch (err) {
     console.log('login response error:', err);
+  }
+}
+
+// deletes a genre on the db through the server
+function* deleteGenre(action) {
+  try {
+    console.log(`here the action.payload is`, action.payload);
+    yield axios.delete(`/api/genre/${action.payload}`);
+    yield put({ type: 'FETCH_GENRES' });
+  } catch (err) {
+    console.log('delete genre  error:', err);
+  }
+}
+
+// adds a single genre
+function* addGenre(action) {
+  try {
+    yield axios.post(`/api/genre`, { genre: action.payload });
+    yield put({ type: 'FETCH_GENRES' });
+  } catch (err) {
+    console.log('add genre  error:', err);
   }
 }
 
