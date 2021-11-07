@@ -62,8 +62,6 @@ function* fetchGenres(action) {
 function* addMovie(action) {
   try {
     const response = yield axios.post('/api/movie', action.payload);
-    // navigate back to the home page
-    yield history.push('/');
   } catch (err) {
     console.log('add movie error:', err);
   }
@@ -93,7 +91,7 @@ const genres = (state = [], action) => {
 };
 
 // Used to store the movie for which details are being viewed
-const selectedMovie = (state = { genre_id: '' }, action) => {
+const selectedMovie = (state = { genre_ids: [] }, action) => {
   switch (action.type) {
     case 'SET_SELECTED_MOVIE':
       return action.payload;
