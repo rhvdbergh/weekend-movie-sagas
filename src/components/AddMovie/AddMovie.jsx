@@ -47,8 +47,6 @@ function AddMovie() {
       dispatch({ type: 'ADD_MOVIE', payload: newMovie });
       // reset newMovie
       setNewMovie(initialNewMovieState);
-      // navigate back to the home page
-      history.push('/');
     } else {
       alert(`Please select a movie genre.`);
     }
