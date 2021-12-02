@@ -8,7 +8,9 @@ This app is a movie list app. Users can view the top ten movies in the main page
 
 The user can also add movies (by supplying a title, poster url, description, and genres). Users can later edit movies by clicking on the movie on the main page—which will display the selected movie's details—and then selecting edit on the next page.
 
-An additional feature is that (after a mock login - )
+An additional feature is that (after a mock login) admin users can add or remove genres.
+
+A deployed version of the app can be found [here](https://bit.ly/moviesaga).
 
 The app uses a [PostgreSQL](https://www.postgresql.org/) database to store the movies and genres, [Express](https://expressjs.com/) / [Node.js](https://nodejs.org/en/) as a server, and [React](https://reactjs.org/), [Redux](https://redux.js.org/), and [Redux-Saga](https://redux-saga.js.org/) on the front end. Styling is provided by [Material-UI](https://mui.com/).
 
